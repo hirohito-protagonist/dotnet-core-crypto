@@ -19,6 +19,13 @@ namespace Crypto.Demo
             Console.WriteLine($"SHA1 message: {message} hash: {Convert.ToBase64String(CryptoHash.Sha1(messageBytes))}");
             Console.WriteLine($"SHA256 message: {message} hash: {Convert.ToBase64String(CryptoHash.Sha256(messageBytes))}");
             Console.WriteLine($"SHA512 message: {message} hash: {Convert.ToBase64String(CryptoHash.Sha512(messageBytes))}");
+
+            var key = CryptoRandom.Generate(32);
+
+            Console.WriteLine($"HMAC MD5 message: {message} hash: {Convert.ToBase64String(CryptoHmac.Md5(messageBytes, key))}");
+            Console.WriteLine($"HMAC SHA1 message: {message} hash: {Convert.ToBase64String(CryptoHmac.Sha1(messageBytes, key))}");
+            Console.WriteLine($"HMAC SHA256 message: {message} hash: {Convert.ToBase64String(CryptoHmac.Sha256(messageBytes, key))}");
+            Console.WriteLine($"HMAC SHA512 message: {message} hash: {Convert.ToBase64String(CryptoHmac.Sha512(messageBytes, key))}");
         }
     }
 }
