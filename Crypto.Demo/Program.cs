@@ -26,6 +26,11 @@ namespace Crypto.Demo
             Console.WriteLine($"HMAC SHA1 message: {message} hash: {Convert.ToBase64String(CryptoHmac.Sha1(messageBytes, key))}");
             Console.WriteLine($"HMAC SHA256 message: {message} hash: {Convert.ToBase64String(CryptoHmac.Sha256(messageBytes, key))}");
             Console.WriteLine($"HMAC SHA512 message: {message} hash: {Convert.ToBase64String(CryptoHmac.Sha512(messageBytes, key))}");
+
+            Console.WriteLine("-------------------------------------------"); 
+            Console.WriteLine("Passsword hash with salt");
+            Console.WriteLine($"Password: {message}");
+            Console.WriteLine($"Password hashed: {Convert.ToBase64String(CryptoHash.Password(messageBytes))}");
         }
     }
 }
