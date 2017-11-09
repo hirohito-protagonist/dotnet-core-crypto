@@ -48,6 +48,14 @@ namespace Crypto.Lib
         public static byte[] Password(byte[] password, int saltKeyLength = 32)
         {
             return CryptoHash.Sha256(CryptoHash.Combine(password, CryptoRandom.Generate(saltKeyLength)));
+        }
+
+        public static byte[] Password(byte[] password, byte[] salt, int rounds)
+        {
+            using (var rfc2898 = new Rfc2898DeriveBytes(password, salt, rounds))
+            {
+                return rfc2898.GetBytes(32);
+            }
         }        
     }
 }

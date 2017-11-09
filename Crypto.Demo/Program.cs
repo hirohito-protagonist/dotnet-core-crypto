@@ -14,7 +14,7 @@ namespace Crypto.Demo
 
             var message = "Hiro universe";
             var messageBytes = Encoding.UTF8.GetBytes(message);
-
+        
             Console.WriteLine($"MD5 message: {message} hash: {Convert.ToBase64String(CryptoHash.Md5(messageBytes))}");
             Console.WriteLine($"SHA1 message: {message} hash: {Convert.ToBase64String(CryptoHash.Sha1(messageBytes))}");
             Console.WriteLine($"SHA256 message: {message} hash: {Convert.ToBase64String(CryptoHash.Sha256(messageBytes))}");
@@ -31,6 +31,14 @@ namespace Crypto.Demo
             Console.WriteLine("Passsword hash with salt");
             Console.WriteLine($"Password: {message}");
             Console.WriteLine($"Password hashed: {Convert.ToBase64String(CryptoHash.Password(messageBytes))}");
+
+            Console.WriteLine("-------------------------------------------"); 
+            var salt = CryptoRandom.Generate(32);
+            Console.WriteLine("Passsword hash with salt - Based Key Derivation Function - PBKDF2");
+            Console.WriteLine($"Password: {message}");
+            Console.WriteLine($"Password hashed 100 rounds: {Convert.ToBase64String(CryptoHash.Password(messageBytes, salt, 100))}");
+            Console.WriteLine($"Password hashed 1000 rounds: {Convert.ToBase64String(CryptoHash.Password(messageBytes, salt, 1000))}");
+            Console.WriteLine($"Password hashed 10000 rounds: {Convert.ToBase64String(CryptoHash.Password(messageBytes, salt, 10000))}");
         }
     }
 }
