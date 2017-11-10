@@ -8,7 +8,7 @@ namespace Crypto.Lib
     {
         public static byte[] Encrypt(string plainText, byte[] key, byte[] iv)
         {
-            using (var des = new DESCryptoServiceProvider())
+            using (var des = DES.Create())
             {
                 des.Mode = CipherMode.CBC;
                 des.Padding = PaddingMode.PKCS7;
@@ -32,7 +32,7 @@ namespace Crypto.Lib
 
         public static string Decrypt(byte[] data, byte[] key, byte[] iv)
         {
-            using (var des = new DESCryptoServiceProvider())
+            using (var des = DES.Create())
             {
                 des.Mode = CipherMode.CBC;
                 des.Padding = PaddingMode.PKCS7;
