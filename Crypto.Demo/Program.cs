@@ -39,6 +39,16 @@ namespace Crypto.Demo
             Console.WriteLine($"Password hashed 100 rounds: {Convert.ToBase64String(CryptoHash.Password(messageBytes, salt, 100))}");
             Console.WriteLine($"Password hashed 1000 rounds: {Convert.ToBase64String(CryptoHash.Password(messageBytes, salt, 1000))}");
             Console.WriteLine($"Password hashed 10000 rounds: {Convert.ToBase64String(CryptoHash.Password(messageBytes, salt, 10000))}");
+
+            Console.WriteLine("-------------------------------------------");
+            var desKey = CryptoRandom.Generate(8);
+            var desIv = CryptoRandom.Generate(8);
+            var desEncryptedMessage = CryptoDes.Encrypt(message, desKey, desIv);
+            var desDecryptedMessage = CryptoDes.Decrypt(desEncryptedMessage, desKey, desIv);
+            Console.WriteLine("DES Encryption");
+            Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Encrypted: {Convert.ToBase64String(desEncryptedMessage)}");
+            Console.WriteLine($"Decrypted: {desDecryptedMessage}");
         }
     }
 }
