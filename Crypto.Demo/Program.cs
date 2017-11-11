@@ -49,6 +49,16 @@ namespace Crypto.Demo
             Console.WriteLine($"Text: {message}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(desEncryptedMessage)}");
             Console.WriteLine($"Decrypted: {desDecryptedMessage}");
+
+            Console.WriteLine("-------------------------------------------");
+            var tripleDesKey = CryptoRandom.Generate(16);
+            var tripleDesIv = CryptoRandom.Generate(8);
+            var tripleDesEncryptedMessage = CryptoTripleDes.Encrypt(message, tripleDesKey, tripleDesIv);
+            var tripleDesDecryptedMessage = CryptoTripleDes.Decrypt(tripleDesEncryptedMessage, tripleDesKey, tripleDesIv);
+            Console.WriteLine("Triple DES Encryption");
+            Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Encrypted: {Convert.ToBase64String(tripleDesEncryptedMessage)}");
+            Console.WriteLine($"Decrypted: {tripleDesDecryptedMessage}");
         }
     }
 }
