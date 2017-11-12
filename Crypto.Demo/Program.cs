@@ -47,6 +47,8 @@ namespace Crypto.Demo
             var desDecryptedMessage = CryptoDes.Decrypt(desEncryptedMessage, desKey, desIv);
             Console.WriteLine("DES Encryption");
             Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Key: {Convert.ToBase64String(desKey)}");
+            Console.WriteLine($"IV: {Convert.ToBase64String(desIv)}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(desEncryptedMessage)}");
             Console.WriteLine($"Decrypted: {desDecryptedMessage}");
 
@@ -57,8 +59,22 @@ namespace Crypto.Demo
             var tripleDesDecryptedMessage = CryptoTripleDes.Decrypt(tripleDesEncryptedMessage, tripleDesKey, tripleDesIv);
             Console.WriteLine("Triple DES Encryption");
             Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Key: {Convert.ToBase64String(tripleDesKey)}");
+            Console.WriteLine($"IV: {Convert.ToBase64String(tripleDesIv)}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(tripleDesEncryptedMessage)}");
             Console.WriteLine($"Decrypted: {tripleDesDecryptedMessage}");
+
+            Console.WriteLine("-------------------------------------------");
+            var aesKey = CryptoRandom.Generate(32);
+            var aesIv = CryptoRandom.Generate(16);
+            var aesEncryptedMessage = CryptoAes.Encrypt(message, aesKey, aesIv);
+            var aesDecryptedMessage = CryptoAes.Decrypt(aesEncryptedMessage, aesKey, aesIv);
+            Console.WriteLine("AES Encryption");
+            Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Key: {Convert.ToBase64String(aesKey)}");
+            Console.WriteLine($"IV: {Convert.ToBase64String(aesIv)}");
+            Console.WriteLine($"Encrypted: {Convert.ToBase64String(aesEncryptedMessage)}");
+            Console.WriteLine($"Decrypted: {aesDecryptedMessage}");
         }
     }
 }
