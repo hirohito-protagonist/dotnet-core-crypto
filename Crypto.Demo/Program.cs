@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Security.Cryptography;
 using Crypto.Lib;
 
 namespace Crypto.Demo
@@ -75,6 +76,22 @@ namespace Crypto.Demo
             Console.WriteLine($"IV: {Convert.ToBase64String(aesIv)}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(aesEncryptedMessage)}");
             Console.WriteLine($"Decrypted: {aesDecryptedMessage}");
+
+            Console.WriteLine("-------------------------------------------");
+            RSAParameters publicKey;
+            RSAParameters privateKey;
+
+            using (var rsa = new RSACryptoServiceProvider(2048))
+            {               
+                publicKey = rsa.ExportParameters(false);
+                privateKey = rsa.ExportParameters(true);
+            }
+            var rsaEncryptedMessage = CryptoRsa.Encrypt(messageBytes, publicKey);
+            var rsaDecryptedMessage = CryptoRsa.Decrypt(rsaEncryptedMessage, privateKey);
+            Console.WriteLine("RSA Encryption");
+            Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Encrypted: {Convert.ToBase64String(rsaEncryptedMessage)}");
+            Console.WriteLine($"Decrypted: {Encoding.Default.GetString(rsaDecryptedMessage)}");
         }
     }
 }
