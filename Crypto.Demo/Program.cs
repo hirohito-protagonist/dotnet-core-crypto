@@ -77,7 +77,7 @@ namespace Crypto.Demo
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(aesEncryptedMessage)}");
             Console.WriteLine($"Decrypted: {aesDecryptedMessage}");
 
-            Console.WriteLine("-------------------------------------------");
+            
             RSAParameters publicKey;
             RSAParameters privateKey;
 
@@ -86,12 +86,21 @@ namespace Crypto.Demo
                 publicKey = rsa.ExportParameters(false);
                 privateKey = rsa.ExportParameters(true);
             }
+            Console.WriteLine("-------------------------------------------");
             var rsaEncryptedMessage = CryptoRsa.Encrypt(messageBytes, publicKey);
             var rsaDecryptedMessage = CryptoRsa.Decrypt(rsaEncryptedMessage, privateKey);
             Console.WriteLine("RSA Encryption");
             Console.WriteLine($"Text: {message}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(rsaEncryptedMessage)}");
             Console.WriteLine($"Decrypted: {Encoding.Default.GetString(rsaDecryptedMessage)}");
+
+            Console.WriteLine("-------------------------------------------");
+            var hybridEncryptedPacket = CryptoHybrid.Encrypt(message, publicKey);
+            var hybridDecryptedMessage = CryptoHybrid.Decrypt(hybridEncryptedPacket, privateKey);
+            Console.WriteLine("Hybrid Encryption using AES and RSA");
+            Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Encrypted: {Convert.ToBase64String(hybridEncryptedPacket.EncryptedData)}");
+            Console.WriteLine($"Decrypted: {hybridDecryptedMessage}");
         }
     }
 }
