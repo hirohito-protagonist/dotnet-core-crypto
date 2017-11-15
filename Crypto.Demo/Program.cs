@@ -101,6 +101,15 @@ namespace Crypto.Demo
             Console.WriteLine($"Text: {message}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(hybridEncryptedPacket.EncryptedData)}");
             Console.WriteLine($"Decrypted: {hybridDecryptedMessage}");
+
+            Console.WriteLine("-------------------------------------------");
+            var hashedMessage = CryptoHash.Sha256(messageBytes);
+            var signature = CryptoDigitalSignature.Sign(hashedMessage, privateKey);
+            var verify = CryptoDigitalSignature.Verify(hashedMessage, signature, publicKey);
+            Console.WriteLine("Digital Signature");
+            Console.WriteLine($"Text: {message}");
+            Console.WriteLine($"Signature: {Convert.ToBase64String(signature)}");
+            Console.WriteLine("Is Verified: " + (verify ? "true" : "false"));
         }
     }
 }
