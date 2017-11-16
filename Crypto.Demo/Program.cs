@@ -110,6 +110,23 @@ namespace Crypto.Demo
             Console.WriteLine($"Text: {message}");
             Console.WriteLine($"Signature: {Convert.ToBase64String(signature)}");
             Console.WriteLine("Is Verified: " + (verify ? "true" : "false"));
+
+            Console.WriteLine("-------------------------------------------");
+            try {
+                var rsaParameters = new CryptoRSAParameters();
+                rsaParameters.GenerateKeys();
+                var hybridSignatureEncryptedPacket = CryptoHybridIntegrity.Encrypt(message, rsaParameters);
+                var hybridSignatureDecryptedMessage = CryptoHybridIntegrity.Decrypt(hybridSignatureEncryptedPacket, rsaParameters);
+                Console.WriteLine("Hybrid encryption with digital signature");
+                Console.WriteLine($"Text: {message}");
+                Console.WriteLine($"Signature: {Convert.ToBase64String(hybridSignatureEncryptedPacket.Signature)}");
+                Console.WriteLine($"Encrypted: {Convert.ToBase64String(hybridSignatureEncryptedPacket.EncryptedData)}");
+                Console.WriteLine($"Decrypted: {hybridSignatureDecryptedMessage}");
+            }
+            catch (CryptographicException ex)
+            {
+                Console.WriteLine("Error : " + ex.Message);
+            }
         }
     }
 }
