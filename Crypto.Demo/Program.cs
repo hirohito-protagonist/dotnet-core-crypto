@@ -9,6 +9,9 @@ namespace Crypto.Demo
     {
         static void Main(string[] args)
         {
+            var rsaParameters = new CryptoRSAParameters();
+            rsaParameters.GenerateKeys();
+
             Console.WriteLine($"Random {Convert.ToBase64String(CryptoRandom.Generate(32))}");
 
             Console.WriteLine("-------------------------------------------");
@@ -78,25 +81,17 @@ namespace Crypto.Demo
             Console.WriteLine($"Decrypted: {aesDecryptedMessage}");
 
             
-            RSAParameters publicKey;
-            RSAParameters privateKey;
-
-            using (var rsa = new RSACryptoServiceProvider(2048))
-            {               
-                publicKey = rsa.ExportParameters(false);
-                privateKey = rsa.ExportParameters(true);
-            }
             Console.WriteLine("-------------------------------------------");
-            var rsaEncryptedMessage = CryptoRsa.Encrypt(messageBytes, publicKey);
-            var rsaDecryptedMessage = CryptoRsa.Decrypt(rsaEncryptedMessage, privateKey);
+            var rsaEncryptedMessage = CryptoRsa.Encrypt(messageBytes, rsaParameters.publicKey);
+            var rsaDecryptedMessage = CryptoRsa.Decrypt(rsaEncryptedMessage, rsaParameters.privateKey);
             Console.WriteLine("RSA Encryption");
             Console.WriteLine($"Text: {message}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(rsaEncryptedMessage)}");
             Console.WriteLine($"Decrypted: {Encoding.Default.GetString(rsaDecryptedMessage)}");
 
             Console.WriteLine("-------------------------------------------");
-            var hybridEncryptedPacket = CryptoHybrid.Encrypt(message, publicKey);
-            var hybridDecryptedMessage = CryptoHybrid.Decrypt(hybridEncryptedPacket, privateKey);
+            var hybridEncryptedPacket = CryptoHybrid.Encrypt(message, rsaParameters.publicKey);
+            var hybridDecryptedMessage = CryptoHybrid.Decrypt(hybridEncryptedPacket, rsaParameters.privateKey);
             Console.WriteLine("Hybrid Encryption using AES and RSA");
             Console.WriteLine($"Text: {message}");
             Console.WriteLine($"Encrypted: {Convert.ToBase64String(hybridEncryptedPacket.EncryptedData)}");
@@ -104,8 +99,8 @@ namespace Crypto.Demo
 
             Console.WriteLine("-------------------------------------------");
             var hashedMessage = CryptoHash.Sha256(messageBytes);
-            var signature = CryptoDigitalSignature.Sign(hashedMessage, privateKey);
-            var verify = CryptoDigitalSignature.Verify(hashedMessage, signature, publicKey);
+            var signature = CryptoDigitalSignature.Sign(hashedMessage, rsaParameters.privateKey);
+            var verify = CryptoDigitalSignature.Verify(hashedMessage, signature, rsaParameters.publicKey);
             Console.WriteLine("Digital Signature");
             Console.WriteLine($"Text: {message}");
             Console.WriteLine($"Signature: {Convert.ToBase64String(signature)}");
@@ -113,8 +108,6 @@ namespace Crypto.Demo
 
             Console.WriteLine("-------------------------------------------");
             try {
-                var rsaParameters = new CryptoRSAParameters();
-                rsaParameters.GenerateKeys();
                 var hybridSignatureEncryptedPacket = CryptoHybridIntegrity.Encrypt(message, rsaParameters);
                 var hybridSignatureDecryptedMessage = CryptoHybridIntegrity.Decrypt(hybridSignatureEncryptedPacket, rsaParameters);
                 Console.WriteLine("Hybrid encryption with digital signature");
