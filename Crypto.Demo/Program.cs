@@ -9,6 +9,12 @@ namespace Crypto.Demo
     {
         static void Main(string[] args)
         {
+            var str = CryptoSecureString.ToSecureString(new[] { 'h', 'i', 'r', 'o' });
+
+            char [] charArray = CryptoSecureString.CharacterData(str);
+
+            string unsecure = CryptoSecureString.ConvertToUnsecureString(str);
+
             var rsaParameters = new CryptoRSAParameters();
             rsaParameters.GenerateKeys();
 
